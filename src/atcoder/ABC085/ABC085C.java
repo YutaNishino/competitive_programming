@@ -1,4 +1,4 @@
-package atcoder.practice.ABC085;
+package atcoder.ABC085;
 
 import java.util.Scanner;
 
