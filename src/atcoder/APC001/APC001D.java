@@ -19,7 +19,7 @@ public class APC001D {
         ArrayList<LinkedList<Integer>> forest = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             weights[i] = sc.nextInt();
-            forest.add(new LinkedList<Integer>());
+            forest.add(new LinkedList<>());
         }
         for (int i = 0; i < m; i++) {
             int x = sc.nextInt();
@@ -35,7 +35,7 @@ public class APC001D {
         for (int i = 0; i < n; i++) {
             if (!visited[i]){
                 List<Integer> costs = new ArrayList<>();
-                Stack<Integer> stack = new Stack<Integer>();
+                Stack<Integer> stack = new Stack<>();
                 stack.push(i);
                 while (!stack.isEmpty()) {
                     int vertex = stack.pop();
