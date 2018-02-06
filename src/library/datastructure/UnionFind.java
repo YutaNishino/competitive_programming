@@ -8,7 +8,7 @@ public class UnionFind {
 
     public UnionFind(int size) {
         parent = new int[size];
-        int[] count = new int[size];
+        count = new int[size];
         for (int i = 0; i < size; i++) {
             parent[i] = i;
             count[i] = 1;
