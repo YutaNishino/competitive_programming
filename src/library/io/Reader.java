@@ -6,6 +6,12 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Reader {
+    public static void main(String args[]) {
+        FastReader sc = new FastReader();
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+    }
+
     static class FastReader
     {
         BufferedReader br;
