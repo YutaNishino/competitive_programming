@@ -28,30 +28,6 @@ public class ABC054C {
         visited[0] = true;
         int ans = dfs(0, 0);
         System.out.println(ans);
-        /*
-        long count = 0;
-        visited = new boolean[n];
-        Stack<Integer> stack = new Stack<>();
-        stack.push(0);
-        while(!stack.isEmpty()) {
-            int vertex = stack.pop();
-            visited[vertex] = true;
-            LinkedList<Integer> edges = graph.get(vertex);
-            if (edges.isEmpty()) {
-                boolean flag = true;
-                for (int i = 0; i < n; i++) {
-                    if (!visited[i]) {
-                        flag = false;
-                        break;
-                    }
-                }
-                if (flag) count++;
-                visited[vertex] = false;
-            } else {
-                for (int edge : edges) stack.push(edge);
-            }
-        }
-        */
     }
 
     // called as dfs(0, 0)
