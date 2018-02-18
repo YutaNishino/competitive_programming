@@ -1,23 +1,35 @@
-package codeforces;
+package codeforces.Edu38;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.StringTokenizer;
 
-public class Edu38B {
+public class Edu38A {
     public static void main(String args[]) {
         FastReader sc = new FastReader();
         int n = sc.nextInt();
-        int position = 1;
-        int friend = 1000000;
-        int ans = 0;
-        for (int i = 0; i < n; i++) {
-            int temp = sc.nextInt();
-            int candidate = Math.min(temp - position, friend - temp);
-            if (ans < candidate) ans = candidate;
+        String s = sc.next();
+        List<String> vowels = new ArrayList<String>(Arrays.asList("a", "e", "i", "o", "u", "y"));
+        boolean flag = true;
+        boolean firstFlag = false;
+        for (int i = 0; i < s.length(); i++) {
+            if(vowels.contains(s.substring(i,i + 1))) {
+                if (firstFlag) {
+                    s = s.substring(0, i) +
+                            s.substring(i + 1, s.length());
+                    i--;
+                } else {
+                    firstFlag = true;
+                }
+            } else {
+                firstFlag = false;
+            }
         }
-        System.out.println(ans);
+        System.out.println(s);
     }
 
     static class FastReader
