@@ -12,19 +12,16 @@ public class Reader {
         int m = sc.nextInt();
     }
 
-    static class FastReader
-    {
+    static class FastReader {
         BufferedReader br;
         StringTokenizer st;
 
-        public FastReader()
-        {
+        public FastReader() {
             br = new BufferedReader(new
                     InputStreamReader(System.in));
         }
 
-        String next()
-        {
+        String next() {
             while (st == null || !st.hasMoreElements())
             {
                 try
@@ -54,8 +51,7 @@ public class Reader {
             return Double.parseDouble(next());
         }
 
-        String nextLine()
-        {
+        String nextLine() {
             String str = "";
             try
             {
