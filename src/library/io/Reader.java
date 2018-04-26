@@ -6,14 +6,16 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Reader {
+    int n, m;
+
     public static void main(String args[]) {
         new Reader().run();
     }
 
     void run() {
         FastReader sc = new FastReader();
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+        n = sc.nextInt();
+        m = sc.nextInt();
         solve();
     }
 
