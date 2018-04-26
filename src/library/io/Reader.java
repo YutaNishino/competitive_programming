@@ -7,9 +7,18 @@ import java.util.StringTokenizer;
 
 public class Reader {
     public static void main(String args[]) {
+        new Reader().run();
+    }
+
+    void run() {
         FastReader sc = new FastReader();
         int n = sc.nextInt();
         int m = sc.nextInt();
+        solve();
+    }
+
+    void solve() {
+
     }
 
     static class FastReader
