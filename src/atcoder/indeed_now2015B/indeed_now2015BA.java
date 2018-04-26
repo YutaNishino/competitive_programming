@@ -1,24 +1,18 @@
-package library.io;
+package atcoder.indeed_now2015B;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Reader {
+public class indeed_now2015BA {
     public static void main(String args[]) {
-        new Reader().run();
-    }
-
-    void run() {
         FastReader sc = new FastReader();
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        solve();
-    }
-
-    void solve() {
-
+        int x1 = sc.nextInt();
+        int y1 = sc.nextInt();
+        int x2 = sc.nextInt();
+        int y2 = sc.nextInt();
+        System.out.println(Math.abs(x1 - x2) + Math.abs(y1 - y2) + 1);
     }
 
     static class FastReader {

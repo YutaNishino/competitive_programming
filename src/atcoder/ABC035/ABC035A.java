@@ -1,24 +1,17 @@
-package library.io;
+package atcoder.ABC035;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Reader {
+public class ABC035A {
     public static void main(String args[]) {
-        new Reader().run();
-    }
-
-    void run() {
         FastReader sc = new FastReader();
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        solve();
-    }
-
-    void solve() {
-
+        int w = sc.nextInt();
+        int h = sc.nextInt();
+        if (w * 3 == h * 4) System.out.println("4:3");
+        else System.out.println("16:9");
     }
 
     static class FastReader {

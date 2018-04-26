@@ -1,24 +1,31 @@
-package library.io;
+package atcoder.ABC095;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Reader {
+public class ABC095C {
     public static void main(String args[]) {
-        new Reader().run();
-    }
-
-    void run() {
         FastReader sc = new FastReader();
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        solve();
-    }
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        int c = sc.nextInt();
+        int x = sc.nextInt();
+        int y = sc.nextInt();
 
-    void solve() {
-
+        int min = Math.min(x, y);
+        int cheaper = Math.min(a + b, 2 * c);
+        int sum = min * cheaper;
+        if (x > y) {
+            cheaper = Math.min(a, 2 * c);
+            sum += (x - y) * cheaper;
+        }
+        else {
+            cheaper = Math.min(b, 2 * c);
+            sum += (y - x) * cheaper;
+        }
+        System.out.println(sum);
     }
 
     static class FastReader {
