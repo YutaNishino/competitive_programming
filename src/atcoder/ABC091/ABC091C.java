@@ -4,83 +4,82 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.StringTokenizer;
 
 public class ABC091C {
+    int n;
+    Point[] rs, bs;
+
     public static void main(String args[]) {
-        FastReader sc = new FastReader();
-        int n = sc.nextInt();
-        Pair[] reds = new Pair[n];
-        Pair[] blues = new Pair[n];
-        for(int i = 0; i < n; i++) {
-            reds[i] = new Pair(sc.nextInt(), sc.nextInt());
-        }
-        for(int i = 0; i < n; i++) {
-            blues[i] = new Pair(sc.nextInt(), sc.nextInt());
-        }
-
-        Arrays.sort(reds, Collections.reverseOrder());
-        Arrays.sort(blues);
-
-        int ans = check(reds, blues);
-        System.out.println(ans);
+        new ABC091C().run();
     }
 
-    static int check(Pair[] reds, Pair[] blues) {
-        if (reds.length == 1) {
-            System.out.printf("%d %d %d %d\n", reds[0].x, reds[0].y, blues[0].x, blues[0].y);
-            if (goodPair(reds[0], blues[0])) return 1;
-            else return 0;
+    void run() {
+        FastReader sc = new FastReader();
+        n = sc.nextInt();
+        rs = new Point[n];
+        bs = new Point[n];
+        for (int i = 0; i < n; i++) {
+            rs[i] = new Point(sc.nextInt(), sc.nextInt());
         }
-        int max = 0;
-        int temp = 0;
-        for (int i = 0; i < reds.length; i++) {
-            Pair red = reds[i];
-            for (int j = 0; j < blues.length; j++) {
-                Pair blue = blues[j];
-                Pair[] newReds = new Pair[reds.length - 1];
-                int offsetRed = 0;
-                for (int k = 0; k < newReds.length; k++) {
-                    if (k != i) newReds[k] = reds[k + offsetRed];
-                    else offsetRed = 1;
+        for (int i = 0; i < n; i++) {
+            bs[i] = new Point(sc.nextInt(), sc.nextInt());
+        }
+        solve();
+    }
+
+    void solve() {
+        int count = 0;
+        boolean[] paired = new boolean[n];
+        Arrays.sort(bs, new sortByX());
+        for (int i = 0; i < n; i++) {
+            Point b = bs[i];
+            int index = -1;
+            int maxY = -1;
+            for (int j = 0; j < n; j++) {
+                if (paired[j] || rs[j].x >= b.x || rs[j].y >= b.y) {
+                    continue;
                 }
-                Pair[] newBlues = new Pair[blues.length - 1];
-                int offsetBlue = 0;
-                for (int k = 0; k < newBlues.length; k++) {
-                    if (k != i) newBlues[k] = blues[k + offsetBlue];
-                    else offsetBlue = 1;
+                if (rs[j].y > maxY) {
+                    index = j;
+                    maxY = rs[j].y;
                 }
-                int sub = check(newReds, newBlues);
-                if (goodPair(red, blue)) {
-                    temp =  sub + 1;
-                } else {
-                    temp = sub;
-                }
-                if (temp > max) max = temp;
+            }
+            if (maxY > -1) {
+                paired[index] = true;
+                count++;
             }
         }
-        return max;
+        System.out.println(count);
     }
 
-    static boolean goodPair(Pair red, Pair blue) {
-        if (red.x < blue.x && red.y < blue.y) return true;
-        else return false;
+    class sortByX implements Comparator<Point> {
+        public int compare(Point a, Point b) {
+            return a.x - b.x;
+        }
     }
 
-    static class FastReader
-    {
+    class Point {
+        int x;
+        int y;
+
+        Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    class FastReader {
         BufferedReader br;
         StringTokenizer st;
 
-        public FastReader()
-        {
+        public FastReader() {
             br = new BufferedReader(new
                     InputStreamReader(System.in));
         }
 
-        String next()
-        {
+        String next() {
             while (st == null || !st.hasMoreElements())
             {
                 try
@@ -110,8 +109,7 @@ public class ABC091C {
             return Double.parseDouble(next());
         }
 
-        String nextLine()
-        {
+        String nextLine() {
             String str = "";
             try
             {
@@ -122,20 +120,6 @@ public class ABC091C {
                 e.printStackTrace();
             }
             return str;
-        }
-    }
-
-    static class Pair implements Comparable<Pair> {
-        int x;
-        int y;
-
-        Pair(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public int compareTo(Pair p) {
-            return this.x - p.x;
         }
     }
 }
