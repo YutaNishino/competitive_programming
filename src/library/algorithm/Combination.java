@@ -13,7 +13,7 @@ public class Combination {
         invFacts = new int[max + 2];
         invs[1] = 1;
         for (int i = 2; i <= max + 1; i++) {
-            invs[i] = invs[mod % i] * (mod - mod / i) % mod;
+            invs[i] = (int)((long)invs[mod % i] * (mod - mod / i) % mod);
         }
         facts[0] = 1;
         invFacts[0] = 1;
