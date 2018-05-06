@@ -7,7 +7,6 @@ import java.util.StringTokenizer;
 
 public class ABC025D {
     int[][] board;
-    int turn = 0;
     int MOD = 1000000007;
 
     public static void main(String args[]) {
@@ -20,80 +19,50 @@ public class ABC025D {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 board[i][j] = sc.nextInt();
-                if (board[i][j] > 0) {
-                    turn++;
-                }
             }
         }
         solve();
     }
 
     void solve() {
-        boolean[] used = new boolean[26];
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                if (board[i][j] > 0) {
-                    used[board[i][j]] = true;
+        int[] dp = new int[1 << 25];
+        dp[0] = 1;
+        for (int state = 0; state < dp.length; state++) {
+            if (dp[state] == 0) {
+                continue;
+            }
+            int n = Integer.bitCount(state) + 1;
+            for (int i = 0; i < 25; i++) {
+                if ((state & 1 << i) > 0) continue;
+                int y = i / 5;
+                int x = i % 5;
+                if (board[y][x] != 0 && board[y][x] != n) {
+                    continue;
+                }
+                if (check(y, x, i, state)) {
+                    int newState = state | 1 << i;
+                    dp[newState] = (dp[newState] + dp[state]) % MOD;
                 }
             }
         }
-        long ans = rec(board, used, turn);
-        System.out.println(ans);
+        System.out.println(dp[dp.length - 1]);
     }
 
-    long rec(int[][] board, boolean[] used, int turn) {
-        //System.out.println(turn);
-        if (!check(board)) {
-            return 0;
-        }
-        if (turn == 25) {
-            return 1;
-        }
-        long ret = 0;
-        outer:
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                if (board[i][j] == 0) {
-                    for (int k = 1; k < used.length; k++) {
-                        if (!used[k]) {
-                            used[k] = true;
-                            board[i][j] = k;
-                            ret += rec(board, used, turn + 1);
-                            ret %= MOD;
-                            used[k] = false;
-                            board[i][j] = 0;
-                        }
-                    }
-                    break outer;
-                }
+    boolean check(int y, int x, int i, int state) {
+        int leftX = x - 1;
+        int rightX = x + 1;
+        int upperY = y - 1;
+        int lowerY = y + 1;
+        if (leftX >= 0 && rightX < 5) {
+            if ((state & (1 << (i - 1))) > 0 && (state & (1 << (i + 1))) == 0 ||
+                    (state & (1 << (i - 1))) == 0 && (state & (1 << (i + 1))) > 0) {
+                return false;
             }
         }
-        return ret;
-    }
-
-    boolean check(int[][] board) {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 5; j++) {
-                if (board[i][j] > 0 && board[i][j] < board[i + 1][j] &&
-                        board[i + 1][j] < board[i + 2][j]) {
-                    return false;
-                }
-                if (board[i + 2][j] > 0 && board[i][j] > board[i + 1][j] &&
-                        board[i + 1][j] > board[i + 2][j]) {
-                    return false;
-                }
-            }
-        }
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[i][j] > 0 && board[i][j] < board[i][j + 1] &&
-                        board[i][j + 1] < board[i][j + 2]) {
-                    return false;
-                }
-                if (board[i][j + 2] > 0 && board[i][j] > board[i][j + 1] &&
-                        board[i][j + 1] > board[i][j + 2]) {
-                    return false;
-                }
+        if (upperY >= 0 && lowerY < 5) {
+            if ((state & (1 << (i - 5))) > 0 && (state & (1 << (i + 5))) == 0 ||
+                    (state & (1 << (i - 5))) == 0 && (state & (1 << (i + 5))) > 0) {
+                return false;
             }
         }
         return true;
