@@ -1,6 +1,6 @@
 package library.algorithm;
 
-public class Permutation {
+class Permutation {
     int[] indexes;
     int[] arr;
 

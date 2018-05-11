@@ -1,6 +1,6 @@
 package library.algorithm;
 
-public class Primes {
+class Primes {
     boolean[] primeSieve(int n) {
         boolean[] isPrime = new boolean[n+1];
         for (int i = 2; i <= n; i++) {

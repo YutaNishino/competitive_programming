@@ -1,6 +1,6 @@
 package library.algorithm;
 
-public class BinarySearch {
+class BinarySearch {
     static int lower_bound(int[] arr, int key) {
         int low = 0;
         int high = arr.length - 1;

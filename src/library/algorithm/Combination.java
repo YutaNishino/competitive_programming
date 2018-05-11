@@ -1,6 +1,6 @@
 package library.algorithm;
 
-public class Combination {
+class Combination {
     long mod;
     int[] facts;
     int[] invs;
