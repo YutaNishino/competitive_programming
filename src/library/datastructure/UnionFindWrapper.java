@@ -2,26 +2,26 @@ package library.datastructure;
 
 // Implement size of each tree as well as union and find
 public class UnionFindWrapper {
-    static class UnionFind {
-        int[] parent;
+    class UnionFind {
+        int[] parents;
         // only roots have correct counts
-        int[] count;
+        int[] counts;
 
         public UnionFind(int size) {
-            parent = new int[size];
-            count = new int[size];
+            parents = new int[size];
+            counts = new int[size];
             for (int i = 0; i < size; i++) {
-                parent[i] = i;
-                count[i] = 1;
+                parents[i] = i;
+                counts[i] = 1;
             }
         }
 
         // return the root of the input
         // adopt path compression
         public int find(int a) {
-            if (parent[a] == a) return a;
-            parent[a] = find(parent[a]);
-            return parent[a];
+            if (parents[a] == a) return a;
+            parents[a] = find(parents[a]);
+            return parents[a];
         }
 
         // adopt weighted union rule
@@ -29,12 +29,12 @@ public class UnionFindWrapper {
             a = find(a);
             b = find(b);
             if (a == b) return;
-            if (count[a] < count[b]) {
-                parent[a] = b;
-                count[b] += count[a];
+            if (counts[a] < counts[b]) {
+                parents[a] = b;
+                counts[b] += counts[a];
             } else {
-                parent[b] = a;
-                count[a] += count[b];
+                parents[b] = a;
+                counts[a] += counts[b];
             }
         }
 
@@ -45,7 +45,7 @@ public class UnionFindWrapper {
         }
 
         public int count(int a) {
-            return count[find(a)];
+            return counts[find(a)];
         }
     }
 }
