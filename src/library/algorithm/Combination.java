@@ -30,5 +30,6 @@ public class Combination {
 
     long combRep(int n, int k) {
         return comb(n + k - 1, k);
+
     }
 }
