@@ -19,61 +19,98 @@ public class ABC049C {
     }
 
     void solve() {
-        String ans = "YES";
-        for (int i = 0; i < cs.length; i++) {
-            if (cs[i] == 'd') {
-                if (i + 4 >= cs.length) {
-                    ans = "NO";
-                    break;
-                }
-                if (cs[i + 1] != 'r' || cs[i + 2] != 'e' ||
-                        cs[i + 3] != 'a' || cs[i + 4] != 'm') {
-                    ans = "NO";
-                    break;
-                }
-                if (i + 5 == cs.length || cs[i + 5] == 'd') {
-                    continue;
-                }
-                if (i + 6 >= cs.length) {
-                    ans = "NO";
-                    break;
-                }
-                if (cs[i + 5] == 'e' && cs[i + 6] == 'r' && (i + 7 == cs.length ||
-                        cs[i + 7] != 'a')) {
-                    continue;
-                }
-                if (cs[i + 5] != 'e' || cs[i + 6] != 'r') {
-                    ans = "NO";
-                    break;
-                }
+        int i = 0;
+        boolean flag = true;
+        while (i < cs.length) {
+            if (checkDream(i)) {
+                i += 5;
+                continue;
+            }
+            if (checkDreamer(i)) {
+                i += 7;
+                continue;
+            }
+            if (checkErase(i)) {
+                i += 5;
+                continue;
+            }
+            if (checkEraser(i)) {
                 i += 6;
-            } else if (cs[i] == 'e') {
-                if (i + 4 >= cs.length) {
-                    ans = "NO";
-                    break;
-                }
-                if (cs[i + 1] != 'r' || cs[i + 2] != 'a' ||
-                        cs[i + 3] != 's' || cs[i + 4] != 'e') {
-                    ans = "NO";
-                    break;
-                }
-                if (i + 5 == cs.length || cs[i + 5] == 'd' || cs[i + 5] == 'e') {
-                    continue;
-                }
-                if (i + 5 >= cs.length) {
-                    ans = "NO";
-                    break;
-                }
-                if (cs[i + 5] != 'r') {
-                    ans = "NO";
-                    break;
-                }
-            } else {
-                ans = "NO";
-                break;
+                continue;
+            }
+            flag = false;
+            break;
+        }
+        if (flag) {
+            System.out.println("YES");
+        } else {
+            System.out.println("NO");
+        }
+    }
+
+    boolean checkDream(int i) {
+        if (cs[i] == 'd') {
+            if (i + 4 >= cs.length) {
+                return false;
+            }
+            if (cs[i + 1] != 'r' || cs[i + 2] != 'e' ||
+                    cs[i + 3] != 'a' || cs[i + 4] != 'm') {
+                return false;
+            }
+            if (i + 5 == cs.length || cs[i + 5] == 'd' ||
+                    checkErase(i + 5) || checkEraser(i + 5)) {
+                return true;
             }
         }
-        System.out.println(ans);
+        return false;
+    }
+
+    boolean checkDreamer(int i) {
+        if (cs[i] == 'd') {
+            if (i + 6 >= cs.length) {
+                return false;
+            }
+            if (cs[i + 1] != 'r' || cs[i + 2] != 'e' ||
+                    cs[i + 3] != 'a' || cs[i + 4] != 'm' ||
+                    cs[i + 5] != 'e' || cs[i + 6] != 'r') {
+                return false;
+            }
+            if (i + 7 == cs.length || cs[i + 7] == 'd' || cs[i + 7] == 'e') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean checkErase(int i) {
+        if (cs[i] == 'e') {
+            if (i + 4 >= cs.length) {
+                return false;
+            }
+            if (cs[i + 1] != 'r' || cs[i + 2] != 'a' ||
+                    cs[i + 3] != 's' || cs[i + 4] != 'e') {
+                return false;
+            }
+            if (i + 5 == cs.length || cs[i + 5] == 'd' || cs[i + 5] == 'e') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean checkEraser(int i) {
+        if (cs[i] == 'e') {
+            if (i + 5 >= cs.length) {
+                return false;
+            }
+            if (cs[i + 1] != 'r' || cs[i + 2] != 'a' ||
+                    cs[i + 3] != 's' || cs[i + 4] != 'e' ||
+                    cs[i + 5] != 'r') {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     static class FastReader {
