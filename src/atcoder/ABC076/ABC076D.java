@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 public class ABC076D {
     int n;
     int[] ts, vs;
+    double[] elapsedTs;
 
     public static void main(String args[]) {
         new ABC076D().run();
@@ -20,23 +21,46 @@ public class ABC076D {
         vs = new int[n];
         for (int i = 0; i < n; i++) {
             ts[i] = sc.nextInt();
+        }
+        for (int i = 0; i < n; i++) {
             vs[i] = sc.nextInt();
         }
         solve();
     }
 
     void solve() {
-        int[] remainTimes = new int[n];
-        for (int i = n - 2; i >= 0; i--) {
-            remainTimes[i] = ts[i + 1] + remainTimes[i + 1];
+        elapsedTs = new double[n + 1];
+        for (int i = 1; i <= n; i++) {
+            elapsedTs[i] = elapsedTs[i - 1] + ts[i - 1];
         }
-        double distance = 0.0;
-        int prevVelocity = 0;
-        for (int i = 0; i < n - 1; i++) {
-            if (remainTimes[i] >= vs[i] && vs[i + 1] >= vs[i]) {
+        double prevMaximumVelocity = 0.0;
+        double area = 0.0;
+        for (int i = 1; i <= 2* elapsedTs[n]; i++) {
+            double maximumVelocity = maximumVelocity((double)i / 2, elapsedTs[n]);
+            area += (maximumVelocity + prevMaximumVelocity) / 4;
+            prevMaximumVelocity = maximumVelocity;
+        }
+        System.out.printf("%4f\n", area);
+    }
 
+    double maximumVelocity(double elapsedTime, double totalTime) {
+        double[] constraints = new double[n + 2];
+        constraints[n] = elapsedTime;
+        constraints[n + 1] = totalTime - elapsedTime;
+        for (int i = 0; i < n; i++) {
+            if (elapsedTime < elapsedTs[i]) {
+                constraints[i] = vs[i] + elapsedTs[i] - elapsedTime;
+            } else if (elapsedTime > elapsedTs[i + 1]) {
+                constraints[i] = vs[i] + elapsedTime - elapsedTs[i + 1];
+            } else {
+                constraints[i] = vs[i];
             }
         }
+        double ret = Double.MAX_VALUE;
+        for (int i = 0; i < constraints.length; i++) {
+            ret = Math.min(ret, constraints[i]);
+        }
+        return ret;
     }
 
     static class FastReader {
