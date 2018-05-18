@@ -1,0 +1,92 @@
+package atcoder.ChokudaiSpeedrun001;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class CSR001G {
+    int n;
+    int MOD = 1000000007;
+
+    public static void main(String args[]) {
+        new CSR001G().run();
+    }
+
+    void run() {
+        FastReader sc = new FastReader();
+        n = sc.nextInt();
+        long sum = 0;
+        for (int i = 0; i < n; i++) {
+            int a = sc.nextInt();
+            for (int j = 0; j < digit(a); j++) {
+                sum *= 10;
+            }
+            sum += a;
+            sum %= MOD;
+        }
+        System.out.println(sum);
+    }
+
+    int digit(int n) {
+        int ret = 0;
+        while (n > 0) {
+            n /= 10;
+            ret++;
+        }
+        return ret;
+    }
+
+    static class FastReader {
+        BufferedReader br;
+        StringTokenizer st;
+
+        public FastReader() {
+            br = new BufferedReader(new
+                    InputStreamReader(System.in));
+        }
+
+        String next() {
+            while (st == null || !st.hasMoreElements())
+            {
+                try
+                {
+                    st = new StringTokenizer(br.readLine());
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            return st.nextToken();
+        }
+
+        int nextInt()
+        {
+            return Integer.parseInt(next());
+        }
+
+        long nextLong()
+        {
+            return Long.parseLong(next());
+        }
+
+        double nextDouble()
+        {
+            return Double.parseDouble(next());
+        }
+
+        String nextLine() {
+            String str = "";
+            try
+            {
+                str = br.readLine();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            return str;
+        }
+    }
+}
