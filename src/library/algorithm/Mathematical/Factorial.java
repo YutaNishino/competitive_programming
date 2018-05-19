@@ -1,4 +1,4 @@
-package library.algorithm;
+package library.algorithm.Mathematical;
 
 class Factorial {
     long[] fillFactorial(int max, int mod) {

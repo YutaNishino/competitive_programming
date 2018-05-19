@@ -1,4 +1,4 @@
-package library.algorithm;
+package library.algorithm.Mathematical;
 
 public class Pow {
     long pow(long x, int n) {
