@@ -1,65 +1,44 @@
-package atcoder.ABC044;
+package atcoder.ARC060;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class ABC044D {
-    long n, s;
+public class ARC060B {
+    char[] cs;
 
     public static void main(String args[]) {
-        new ABC044D().run();
+        new ARC060B().run();
     }
 
     void run() {
         FastReader sc = new FastReader();
-        n = sc.nextLong();
-        s = sc.nextLong();
+        cs = sc.next().toCharArray();
         solve();
     }
 
     void solve() {
-        long sqrtN = (long)Math.sqrt(n);
-        long minB = -1;
-        if (n <= s) {
-            if (n == s) {
-                minB = n + 1;
+        boolean[] odds = new boolean[26];
+        for (int i = 0; i < cs.length; i++) {
+            if (!odds[cs[i] - 'a']) {
+                odds[cs[i] - 'a'] = true;
+            } else {
+                odds[cs[i] - 'a'] = false;
             }
-            System.out.println(minB);
-            return;
         }
-        for (int b = 2; b <= sqrtN; b++) {
-            long copyN = n;
-            long sumDigits = 0;
-            while (copyN > 0) {
-                sumDigits += copyN % b;
-                copyN /= b;
-            }
-            if (sumDigits == s) {
-                minB = b;
+        boolean flag = true;
+        for (int i = 0; i < odds.length; i++) {
+            if (odds[i]) {
+                flag = false;
                 break;
             }
         }
-        if (minB == -1) {
-            for (long p = sqrtN; p >= 1; p--) {
-                long b = (n - s)/ p + 1;
-                if (b <= 1) {
-                    continue;
-                }
-                long copyN = n;
-                long sumDigits = 0;
-                while (copyN > 0) {
-                    sumDigits += copyN % b;
-                    copyN /= b;
-                }
-                if (sumDigits == s) {
-                    minB = b;
-                    break;
-                }
-            }
+        if (flag) {
+            System.out.println("Yes");
+        } else {
+            System.out.println("No");
         }
-        System.out.println(minB);
     }
 
     static class FastReader {

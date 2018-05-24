@@ -1,15 +1,15 @@
-package atcoder.ABC044;
+package atcoder.ARC060;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class ABC044A {
+public class ARC060A {
     int n, k, x, y;
 
     public static void main(String args[]) {
-        new ABC044A().run();
+        new ARC060A().run();
     }
 
     void run() {

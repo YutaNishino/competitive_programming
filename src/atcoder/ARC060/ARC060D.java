@@ -1,49 +1,65 @@
-package atcoder.ABC044;
+package atcoder.ARC060;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class ABC044C {
-    int n, a;
-    int[] xs;
+public class ARC060D {
+    long n, s;
 
     public static void main(String args[]) {
-        new ABC044C().run();
+        new ARC060D().run();
     }
 
     void run() {
         FastReader sc = new FastReader();
-        n = sc.nextInt();
-        a = sc.nextInt();
-        xs = new int[n];
-        for (int i = 0; i < n; i++) {
-            xs[i] = sc.nextInt();
-        }
+        n = sc.nextLong();
+        s = sc.nextLong();
         solve();
     }
 
     void solve() {
-        long[][][] dp = new long[n + 1][n + 1][50 * n + 1];
-        dp[0][0][0] = 1;
-        for (int i = 1; i <= n; i++) {
-            for (int j = 0; j <= n; j++) {
-                for (int k = 0; k < 50 * n + 1; k++) {
-                    if (j >= 1 && xs[i - 1] <= k) {
-                        dp[i][j][k] = dp[i - 1][j][k] + dp[i - 1][j - 1][k - xs[i - 1]];
-                    } else {
-                        dp[i][j][k] = dp[i - 1][j][k];
-                    }
+        long sqrtN = (long)Math.sqrt(n);
+        long minB = -1;
+        if (n <= s) {
+            if (n == s) {
+                minB = n + 1;
+            }
+            System.out.println(minB);
+            return;
+        }
+        for (int b = 2; b <= sqrtN; b++) {
+            long copyN = n;
+            long sumDigits = 0;
+            while (copyN > 0) {
+                sumDigits += copyN % b;
+                copyN /= b;
+            }
+            if (sumDigits == s) {
+                minB = b;
+                break;
+            }
+        }
+        if (minB == -1) {
+            for (long p = sqrtN; p >= 1; p--) {
+                long b = (n - s)/ p + 1;
+                if (b <= 1) {
+                    continue;
+                }
+                long copyN = n;
+                long sumDigits = 0;
+                while (copyN > 0) {
+                    sumDigits += copyN % b;
+                    copyN /= b;
+                }
+                if (sumDigits == s) {
+                    minB = b;
+                    break;
                 }
             }
         }
-        long ans = 0;
-        for (int j = 1; j <= n; j++) {
-            ans += dp[n][j][j * a];
-        }
-        System.out.println(ans);
+        System.out.println(minB);
     }
 
     static class FastReader {

@@ -1,44 +1,48 @@
-package atcoder.ABC044;
+package atcoder.ARC060;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class ABC044B {
-    char[] cs;
+public class ARC060C {
+    int n, a;
+    int[] xs;
 
     public static void main(String args[]) {
-        new ABC044B().run();
+        new ARC060C().run();
     }
 
     void run() {
         FastReader sc = new FastReader();
-        cs = sc.next().toCharArray();
+        n = sc.nextInt();
+        a = sc.nextInt();
+        xs = new int[n];
+        for (int i = 0; i < n; i++) {
+            xs[i] = sc.nextInt();
+        }
         solve();
     }
 
     void solve() {
-        boolean[] odds = new boolean[26];
-        for (int i = 0; i < cs.length; i++) {
-            if (!odds[cs[i] - 'a']) {
-                odds[cs[i] - 'a'] = true;
-            } else {
-                odds[cs[i] - 'a'] = false;
+        long[][][] dp = new long[n + 1][n + 1][50 * n + 1];
+        dp[0][0][0] = 1;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j <= n; j++) {
+                for (int k = 0; k < 50 * n + 1; k++) {
+                    if (j >= 1 && xs[i - 1] <= k) {
+                        dp[i][j][k] = dp[i - 1][j][k] + dp[i - 1][j - 1][k - xs[i - 1]];
+                    } else {
+                        dp[i][j][k] = dp[i - 1][j][k];
+                    }
+                }
             }
         }
-        boolean flag = true;
-        for (int i = 0; i < odds.length; i++) {
-            if (odds[i]) {
-                flag = false;
-                break;
-            }
+        long ans = 0;
+        for (int j = 1; j <= n; j++) {
+            ans += dp[n][j][j * a];
         }
-        if (flag) {
-            System.out.println("Yes");
-        } else {
-            System.out.println("No");
-        }
+        System.out.println(ans);
     }
 
     static class FastReader {
