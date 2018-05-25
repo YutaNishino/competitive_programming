@@ -1,5 +1,7 @@
 package library.algorithm.Graph;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 class LowestCommonAncestor {
@@ -41,11 +43,16 @@ class LowestCommonAncestor {
     }
 
     void init(int v, int p, int d) {
-        parents[0][v] = p;
-        depth[v] = d;
-        for (int next : graph.get(v)) {
-            if (next != p) {
-                init(next, v, d + 1);
+        Deque<State> stack = new LinkedList<>();
+        stack.push(new State(v, p, d));
+        while (!stack.isEmpty()) {
+            State s = stack.pop();
+            parents[0][s.v] = s.p;
+            depth[s.v] = s.d;
+            for (int next : graph.get(s.v)) {
+                if (next != s.p) {
+                    stack.push(new State(next, s.v, s.d + 1));
+                }
             }
         }
     }
@@ -60,5 +67,17 @@ class LowestCommonAncestor {
                 }
             }
         }
+    }
+}
+
+class State {
+    int v;
+    int p;
+    int d;
+
+    State(int v, int p, int d) {
+        this.v = v;
+        this.p = p;
+        this.d = d;
     }
 }
