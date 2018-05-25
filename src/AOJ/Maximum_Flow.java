@@ -3,9 +3,7 @@ package AOJ;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Maximum_Flow {
     int v, e;
@@ -18,59 +16,56 @@ public class Maximum_Flow {
         FastReader sc = new FastReader();
         v = sc.nextInt();
         e = sc.nextInt();
-        FordFulkerson ff = new FordFulkerson(v);
+        Dinic d = new Dinic(v);
         for (int i = 0; i < e; i++) {
             int from = sc.nextInt();
             int to = sc.nextInt();
             int capacity = sc.nextInt();
-            ff.addEdge(from, to, capacity);
+            d.addEdge(from, to, capacity);
         }
-        long ans = ff.maximumFlow(0, v - 1);
+        long ans = d.maximumFlow(0, v - 1);
         System.out.println(ans);
     }
 
-    class FordFulkerson {
-        ArrayList<ArrayList<Edge>> graph;
-        boolean[] used;
+    public class Dinic {
+        ArrayList<ArrayList<DinicEdge>> graph;
+        // distances from s
+        int[] levels;
+        int[] iters;
 
-        FordFulkerson(int n) {
+        Dinic(int n) {
             graph = new ArrayList<>();
             for (int i = 0; i < n; i++) {
                 graph.add(new ArrayList<>());
             }
-            used = new boolean[n];
+            levels = new int[n];
+            iters = new int[n];
             // manually add edges by using addEdge
         }
 
-        FordFulkerson(ArrayList<ArrayList<Edge>> graph) {
-            this.graph = graph;
-            used = new boolean[graph.size()];
-        }
-
-        long maximumFlow(int s, int t) {
-            long flow = 0;
-            while (true) {
-                Arrays.fill(used, false);
-                long f = dfs(s, t, Long.MAX_VALUE);
-                if (f == 0) {
-                    return flow;
+        void bfs(int s) {
+            Arrays.fill(levels, -1);
+            Queue<Integer> queue = new LinkedList<>();
+            levels[s] = 0;
+            queue.offer(s);
+            while (!queue.isEmpty()) {
+                int v = queue.poll();
+                for (DinicEdge e : graph.get(v)) {
+                    if (e.capacity > 0 && levels[e.to] < 0) {
+                        levels[e.to] = levels[v] + 1;
+                        queue.offer(e.to);
+                    }
                 }
-                flow += f;
             }
-        }
-
-        void addEdge(int from, int to, int capacity) {
-            graph.get(from).add(new Edge(to, capacity, graph.get(to).size()));
-            graph.get(to).add(new Edge(from, 0, graph.get(from).size() - 1));
         }
 
         long dfs(int v, int t, long f) {
             if (v == t) {
                 return f;
             }
-            used[v] = true;
-            for (Edge e : graph.get(v)) {
-                if (!used[e.to] && e.capacity > 0) {
+            for (int i = iters[v]; i < graph.get(v).size(); i++) {
+                DinicEdge e = graph.get(v).get(i);
+                if (e.capacity > 0 && levels[v] < levels[e.to]) {
                     long d = dfs(e.to, t, Math.min(f, e.capacity));
                     if (d > 0) {
                         e.capacity -= d;
@@ -81,14 +76,34 @@ public class Maximum_Flow {
             }
             return 0;
         }
+
+        long maximumFlow(int s, int t) {
+            long flow = 0;
+            while (true) {
+                bfs(s);
+                if (levels[t] < 0) {
+                    return flow;
+                }
+                Arrays.fill(iters, 0);
+                long f;
+                while ((f = dfs(s, t, Long.MAX_VALUE)) > 0) {
+                    flow += f;
+                }
+            }
+        }
+
+        void addEdge(int from, int to, int capacity) {
+            graph.get(from).add(new DinicEdge(to, capacity, graph.get(to).size()));
+            graph.get(to).add(new DinicEdge(from, 0, graph.get(from).size() - 1));
+        }
     }
 
-    class Edge {
+    class DinicEdge {
         int to;
         int capacity;
         int reverse;
 
-        Edge(int to, int capacity, int reverse) {
+        DinicEdge(int to, int capacity, int reverse) {
             this.to = to;
             this.capacity = capacity;
             this.reverse = reverse;
