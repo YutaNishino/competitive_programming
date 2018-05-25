@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 class FordFulkerson {
-    ArrayList<ArrayList<Edge>> graph;
+    ArrayList<ArrayList<FFEdge>> graph;
     boolean[] used;
 
     FordFulkerson(int n) {
@@ -16,7 +16,7 @@ class FordFulkerson {
         // manually add edges by using addEdge
     }
 
-    FordFulkerson(ArrayList<ArrayList<Edge>> graph) {
+    FordFulkerson(ArrayList<ArrayList<FFEdge>> graph) {
         this.graph = graph;
         used = new boolean[graph.size()];
     }
@@ -34,8 +34,8 @@ class FordFulkerson {
     }
 
     void addEdge(int from, int to, int capacity) {
-        graph.get(from).add(new Edge(to, capacity, graph.get(to).size()));
-        graph.get(to).add(new Edge(from, 0, graph.get(from).size() - 1));
+        graph.get(from).add(new FFEdge(to, capacity, graph.get(to).size()));
+        graph.get(to).add(new FFEdge(from, 0, graph.get(from).size() - 1));
     }
 
     long dfs(int v, int t, long f) {
@@ -43,7 +43,7 @@ class FordFulkerson {
             return f;
         }
         used[v] = true;
-        for (Edge e : graph.get(v)) {
+        for (FFEdge e : graph.get(v)) {
             if (!used[e.to] && e.capacity > 0) {
                 long d = dfs(e.to, t, Math.min(f, e.capacity));
                 if (d > 0) {
@@ -57,12 +57,12 @@ class FordFulkerson {
     }
 }
 
-class Edge {
+class FFEdge {
     int to;
     int capacity;
     int reverse;
 
-    Edge(int to, int capacity, int reverse) {
+    FFEdge(int to, int capacity, int reverse) {
         this.to = to;
         this.capacity = capacity;
         this.reverse = reverse;
