@@ -1,4 +1,4 @@
-package library.algorithm.NetworkFlow;
+package library.algorithm.Graph.NetworkFlow;
 
 import java.util.ArrayList;
 import java.util.Arrays;

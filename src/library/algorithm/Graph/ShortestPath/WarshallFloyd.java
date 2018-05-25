@@ -1,4 +1,4 @@
-package library.algorithm.ShortestPath;
+package library.algorithm.Graph.ShortestPath;
 
 // DO not initialize the array distances by Long.MAX_VALUE!
 // Use values like 1 << 60 to avoid overflow.
