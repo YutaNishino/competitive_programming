@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Dinic {
+class Dinic {
     ArrayList<ArrayList<DinicEdge>> graph;
     // distances from s
     int[] levels;
@@ -68,6 +68,11 @@ public class Dinic {
                 flow += f;
             }
         }
+    }
+
+    void addUndirectedEdge(int from, int to, int capacity) {
+        graph.get(from).add(new DinicEdge(to, capacity, graph.get(to).size()));
+        graph.get(to).add(new DinicEdge(from, capacity, graph.get(from).size() - 1));
     }
 
     void addEdge(int from, int to, int capacity) {

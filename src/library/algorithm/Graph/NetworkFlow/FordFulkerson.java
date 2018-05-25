@@ -33,6 +33,11 @@ class FordFulkerson {
         }
     }
 
+    void addUndirectedEdge(int from, int to, int capacity) {
+        graph.get(from).add(new FFEdge(to, capacity, graph.get(to).size()));
+        graph.get(to).add(new FFEdge(from, capacity, graph.get(from).size() - 1));
+    }
+
     void addEdge(int from, int to, int capacity) {
         graph.get(from).add(new FFEdge(to, capacity, graph.get(to).size()));
         graph.get(to).add(new FFEdge(from, 0, graph.get(from).size() - 1));
