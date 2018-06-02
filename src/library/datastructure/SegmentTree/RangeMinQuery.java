@@ -21,7 +21,7 @@ class RangeMinQuery {
         for (int i = n - 1 + arr.length; i < tree.length; i++) {
             tree[i] = MAX;
         }
-        build(0, 0, arr.length, arr);
+        build(0, 0, paddedN, arr);
     }
 
     void build(int k, int l, int r, int[] arr) {
