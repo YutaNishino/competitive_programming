@@ -1,0 +1,102 @@
+package atcoder.ARC075;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class ARC075C {
+    int n;
+    int[] ss;
+    int sum;
+
+    public static void main(String args[]) {
+        new ARC075C().run();
+    }
+
+    void run() {
+        FastReader sc = new FastReader();
+        n = sc.nextInt();
+        ss = new int[n];
+        sum = 0;
+        for (int i = 0; i < n; i++) {
+            ss[i] = sc.nextInt();
+            sum += ss[i];
+        }
+        solve();
+    }
+
+    void solve() {
+        Arrays.sort(ss);
+        if (sum % 10 == 0) {
+            int i = 0;
+            while (i < n) {
+                if (ss[i] % 10 == 0) {
+                    i++;
+                } else {
+                    sum -= ss[i];
+                    break;
+                }
+                if (i == n) {
+                    System.out.println(0);
+                    return;
+                }
+            }
+        }
+        System.out.println(sum);
+    }
+
+    static class FastReader {
+        BufferedReader br;
+        StringTokenizer st;
+
+        public FastReader() {
+            br = new BufferedReader(new
+                    InputStreamReader(System.in));
+        }
+
+        String next() {
+            while (st == null || !st.hasMoreElements())
+            {
+                try
+                {
+                    st = new StringTokenizer(br.readLine());
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            return st.nextToken();
+        }
+
+        int nextInt()
+        {
+            return Integer.parseInt(next());
+        }
+
+        long nextLong()
+        {
+            return Long.parseLong(next());
+        }
+
+        double nextDouble()
+        {
+            return Double.parseDouble(next());
+        }
+
+        String nextLine() {
+            String str = "";
+            try
+            {
+                str = br.readLine();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            return str;
+        }
+    }
+}
