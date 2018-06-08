@@ -33,17 +33,16 @@ public class ARC068E {
 
     void solve() {
         int lengthy = n;
-        FenwickTree ft = new FenwickTree(m);
+        FenwickTreeRange ft = new FenwickTreeRange(m);
         for (int d = 1; d <= m; d++) {
             int ans = 0;
             for (int i = d; i <= m; i += d) {
-                ans += ft.rangeSum(i);
+                ans += ft.getElment(i);
             }
             ans += lengthy;
             System.out.println(ans);
             for (int start : lists.get(d)) {
-                ft.update(start, 1);
-                ft.update(start + d, -1);
+                ft.updateRange(start, start + d, 1);
             }
             lengthy -= lists.get(d).size();
         }
@@ -102,11 +101,11 @@ public class ARC068E {
         }
     }
 
-    class FenwickTree {
+    class FenwickTreeRange {
         private final int[] tree;
         private final int N;
 
-        FenwickTree(int N){
+        FenwickTreeRange(int N){
             this.tree = new int[N + 1];
             this.N = N;
         }
@@ -122,7 +121,13 @@ public class ARC068E {
             }
         }
 
-        int rangeSum(int position){
+        // call this method like updateRange(l, r + 1, 1);
+        void updateRange(int start, int end, int key) {
+            update(start, key);
+            update(end, -key);
+        }
+
+        int getElment(int position){
             int sum = 0;
             while (position >= 1){
                 sum += tree[position];
@@ -131,10 +136,5 @@ public class ARC068E {
 
             return sum;
         }
-
-        int rangeSum(int x, int y){
-            return rangeSum(y) - rangeSum(x - 1);
-        }
     }
-
 }
