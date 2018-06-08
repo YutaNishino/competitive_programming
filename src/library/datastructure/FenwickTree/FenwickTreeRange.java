@@ -1,10 +1,11 @@
-package library.datastructure;
+package library.datastructure.FenwickTree;
 
-class FenwickTree {
+// This type of fenwick tree performs range update and get element
+class FenwickTreeRange {
     private final int[] tree;
     private final int N;
 
-    FenwickTree(int N){
+    FenwickTreeRange(int N){
         this.tree = new int[N + 1];
         this.N = N;
     }
@@ -20,18 +21,19 @@ class FenwickTree {
         }
     }
 
-    int rangeSum(int position){
-        int sum = 0;
+    // call this method like updateRange(l, r + 1, 1);
+    void updateRange(int start, int end, int key) {
+        update(start, key);
+        update(end, -key);
+    }
 
+    int getElment(int position){
+        int sum = 0;
         while (position >= 1){
             sum += tree[position];
             position -= lsb(position);
         }
 
         return sum;
-    }
-
-    int rangeSum(int x, int y){
-        return rangeSum(y) - rangeSum(x - 1);
     }
 }
