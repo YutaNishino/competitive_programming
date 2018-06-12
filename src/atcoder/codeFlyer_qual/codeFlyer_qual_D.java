@@ -23,12 +23,134 @@ public class codeFlyer_qual_D {
         for (int i = 0; i < n; i++) {
             char[] cs = sc.next().toCharArray();
             for (int j = 0; j < m; j++) {
-                hanko[i][j] = cs[i] == '#';
+                hanko[i][j] = cs[j] == '#';
             }
         }
         solve();
     }
 
+    void solve() {
+        long ans = 0;
+        if (n * 2 <= h) {
+            int[][] sums = new int[n][w + 1];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    if (hanko[i][j]) {
+                        sums[i][j]++;
+                        sums[i][j + w - m + 1]--;
+                    }
+                }
+                for (int j = 1; j <= w; j++) {
+                    sums[i][j] += sums[i][j - 1];
+                }
+            }
+            for (int i = 1; i < n; i++) {
+                for (int j = 0; j <= w; j++) {
+                    sums[i][j] += sums[i - 1][j];
+                }
+            }
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < w; j++) {
+                    if (sums[i][j] > 0) {
+                        ans++;
+                    }
+                }
+            }
+            for (int i = 0; i < n; i++) {
+                Arrays.fill(sums[i], 0);
+            }
+            for (int i = n - 1; i >= 0; i--) {
+                for (int j = 0; j < m; j++) {
+                    if (hanko[i][j]) {
+                        sums[i][j]++;
+                        sums[i][j + w - m + 1]--;
+                    }
+                }
+                for (int j = 1; j <= w; j++) {
+                    sums[i][j] += sums[i][j - 1];
+                }
+            }
+            for (int i = n - 2; i >= 0; i--) {
+                for (int j = 0; j <= w; j++) {
+                    sums[i][j] += sums[i + 1][j];
+                }
+            }
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < w; j++) {
+                    if (sums[i][j] > 0) {
+                        ans++;
+                    }
+                }
+            }
+            System.out.println(ans);
+            long line = 0;
+            for (int j = 0; j < w; j++) {
+                if(sums[0][j] > 0) {
+                    line++;
+                }
+            }
+            ans += line * (h - 2 * n);
+        } else {
+            int[][] sums = new int[h / 2][w];
+            for (int i = 0; i < sums.length; i++) {
+                for (int j = 0; j < m; j++) {
+                    if (hanko[i][j]) {
+                        sums[i][j]++;
+                        sums[i][j + w - m + 1]--;
+                    }
+                }
+                for (int j = 1; j <= w; j++) {
+                    sums[i][j] += sums[i][j - 1];
+                }
+            }
+            for (int i = 1; i < sums.length; i++) {
+                for (int j = 0; j <= w; j++) {
+                    sums[i][j] += sums[i - 1][j];
+                }
+            }
+            for (int i = 0; i < sums.length; i++) {
+                for (int j = 0; j < w; j++) {
+                    if (sums[i][j] > 0) {
+                        ans++;
+                    }
+                }
+            }
+            int[][] sums2 = new int[h / 2][w];
+            for (int i = n - 1; i >= n - h / 2; i--) {
+                for (int j = 0; j < m; j++) {
+                    if (hanko[i][j]) {
+                        sums[i - (n - h / 2)][j]++;
+                        sums[i - (n - h / 2)][j + w - m + 1]--;
+                    }
+                }
+                for (int j = 1; j <= w; j++) {
+                    sums[i][j] += sums[i][j - 1];
+                }
+            }
+            for (int i = h / 2 - 2; i >= 0; i--) {
+                for (int j = 0; j <= w; j++) {
+                    sums[i][j] += sums[i + 1][j];
+                }
+            }
+            for (int i = 0; i < h / 2; i++) {
+                for (int j = 0; j < w; j++) {
+                    if (sums[i][j] > 0) {
+                        ans++;
+                    }
+                }
+            }
+            //int[][] sums3 = new int[]
+            if (h % 2 == 1) {
+                int[] line = new int[w];
+                for (int j = 0; j < w; j++) {
+                    //line[j] = sums[h / 2 - 1][j] + sums2[];
+                }
+            }
+        }
+        System.out.println(ans);
+    }
+
+    /*
     void solve() {
         long upAns = upDown(0, Math.min(h - n - 1, n - 2));
         long downAns = upDown(Math.max(h - n, n - 1), h - 1);
@@ -66,6 +188,7 @@ public class codeFlyer_qual_D {
         System.out.println(downAns);
         System.out.println(upAns + centAns + downAns);
     }
+    */
 
     long upDown(int start, int end) {
         if (end < start) {

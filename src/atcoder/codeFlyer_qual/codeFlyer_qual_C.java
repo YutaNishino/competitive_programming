@@ -25,38 +25,24 @@ public class codeFlyer_qual_C {
     }
 
     void solve() {
-        int i = 0;
-        int j = 1;
-        long ans = 0;
-        while (i < n - 2 && j < n - 1) {
-            if (xs[j] - xs[i] > d) {
-                i++;
-                continue;
+        Combination c = new Combination(100000, Integer.MAX_VALUE);
+        long ikLessD = 0;
+        int[] memo = new int[n];
+        for (int i = 0; i < n - 1; i++) {
+            int k = upper_bound(xs, xs[i] + d) - 1;
+            if (k == n) {
+                k--;
             }
-            int ki = upper_bound(xs, xs[i] + d);
-            int kj = upper_bound(xs, xs[j] + d) - 1;
-            System.out.println(i + " " + j + " " + ki + " " + kj);
-            if (ki > kj) {
-                j++;
-                continue;
-            }
-            ans += kj - ki + 1;
-            i++;
+            memo[i] = k;
+            ikLessD += ((long)k - i) * (k - i - 1) / 2;
         }
-        System.out.println(ans);
-
-        /*
-        long ans = 0;
-        for (int j = 1; j < n - 1; j++) {
-            int iMin = lower_bound(xs, xs[j] - d);
-            int kMax = upper_bound(xs, xs[j] + d) - 1;
-            for (int i = iMin; i < j; i++) {
-                int k = upper_bound(xs, xs[i] + d);
-                ans += Math.max(0, kMax - k + 1);
-            }
+        long sub = 0;
+        for (int j = 0; j < n - 1; j++) {
+            int k = memo[j];
+            int i = lower_bound(xs, xs[j] - d);
+            sub += (long)(j - i) * (k - j);
         }
-        System.out.println(ans);
-        */
+        System.out.println(sub - ikLessD);
     }
 
     static int lower_bound(int[] arr, int key) {
@@ -93,6 +79,40 @@ public class codeFlyer_qual_C {
             }
         }
         return low;
+    }
+
+    class Combination {
+        long mod;
+        long[] facts;
+        long[] invs;
+        long[] invFacts;
+
+        public Combination(int max, long mod) {
+            this.mod = mod;
+            facts = new long[max + 2];
+            invs = new long[max + 2];
+            invFacts = new long[max + 2];
+            invs[1] = 1;
+            for (int i = 2; i <= max + 1; i++) {
+                invs[i] = (long)((long)invs[(int)(mod % i)] * (mod - mod / i) % mod);
+            }
+            facts[0] = 1;
+            invFacts[0] = 1;
+            for (int i = 1; i <= max + 1; i++) {
+                facts[i] = (long)(facts[i - 1] * (long)i % mod);
+                invFacts[i] = (long)(invFacts[i - 1] * (long)invs[i] % mod);
+            }
+        }
+
+        long comb (int n, int k) {
+            if (k < 0 || k > n) return 0;
+            return facts[n] * (long)invFacts[k] % mod * (long)invFacts[n - k] % mod;
+        }
+
+        long combRep(int n, int k) {
+            return comb(n + k - 1, k);
+
+        }
     }
 
     static class FastReader {
