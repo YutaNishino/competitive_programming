@@ -23,7 +23,7 @@ class Dijkstra {
             Pair node = queue.poll();
             for (Pair neighbor : graph.get(node.vertex)) {
                 long newCost = distances[node.vertex] + neighbor.cost;
-                if (distances[neighbor.vertex] < newCost) {
+                if (distances[neighbor.vertex] > newCost) {
                     distances[neighbor.vertex] = newCost;
                     queue.offer(new Pair(neighbor.vertex, newCost));
                 }
